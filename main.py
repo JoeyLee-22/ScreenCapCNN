@@ -1,8 +1,8 @@
-from screen_cap import run
+from screen_cap import start
 from CNN import convolutional_neural_network
 
 cnn = convolutional_neural_network()
 
 cnn.data_prep()
 cnn.run()
-run(cnn, minutes=3)
+start(cnn, minutes=3)
