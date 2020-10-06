@@ -3,7 +3,7 @@ import time
 import cv2
 import pyautogui
 
-def run(cnn_instance, minutes=5):
+def start(cnn_instance, minutes=5):
     while(True):
         image = cv2.cvtColor(np.array(pyautogui.screenshot()), cv2.COLOR_RGB2BGR) 
         cv2.imwrite("screenshot.png", image)
