@@ -1,8 +1,8 @@
-import time
-from PIL import Image
 import numpy as np
-import tensorflow as tf
-from tensorflow.keras import datasets, layers, models
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+from matplotlib import image
+from tensorflow.keras import layers, models
 
 import main
 
@@ -17,17 +17,26 @@ class convolutional_neural_network():
         pass
 
     def data_prep(self):
-        im1 = Image.open("train_image1.png")
-        self.np_im1 = np.asarray(im1)/255.0
-        self.np_im1=self.np_im1[:,:,:-1]
+        self.np_im1 = mpimg.imread('images/train_image1.png')[:,:,:-1]
+        self.np_im2 = mpimg.imread('images/train_image2.png')[:,:,:-1]
 
-        im2 = Image.open("train_image2.png")
-        self.np_im2 = np.asarray(im2)/255.0
-        self.np_im2=self.np_im2[:,:,:-1]
+        print(self.np_im1.shape)
+
+        # plt.imshow(self.np_im2)
+        # plt.show()
 
     def run(self):
         train_images = [self.np_im1, self.np_im2]
-        train_labels = [0,1]
+        train_labels = [[1,0],[0,1]]
+
+        model = models.Sequential()
+        model.add(layers.Conv2D(64, kernel_size=3, activation='relu', input_shape=(None,None,3)))
+        model.add(layers.Conv2D(32, kernel_size=3, activation='relu'))
+        model.add(layers.Flatten())
+        model.add(layers.Dense(10, activation='softmax'))
+
+        model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+        model.fit(train_images, train_labels, epochs=10)
 
         # print("\nTotal Time Used")
         # if time > 60:
