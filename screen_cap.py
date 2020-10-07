@@ -4,11 +4,17 @@ import cv2
 import pyautogui
 
 def start(cnn_instance, minutes=5):
+    class_names = ["Good", "Bad"]
+
     while(True):
         og_image = cv2.cvtColor(np.array(pyautogui.screenshot()), cv2.COLOR_RGB2BGR)
-        image = cnn_instance.resize(og_image, 480)
-        print(cnn_instance.classify(np.array([image])))
-        cv2.imwrite("images/screenshot.jpg", og_image)
+        result = cnn_instance.classify(np.array([cnn_instance.resize(og_image, 480)]))
+
+        if result == 0:
+            cv2.imwrite("images/good.jpg", og_image)
+        else:
+            cv2.imwrite("images/bad.jpg", og_image)
+        print(class_names[result])
         
         for secs in range (int(minutes*60)):
             time.sleep(0.98)
