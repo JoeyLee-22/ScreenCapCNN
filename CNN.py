@@ -6,16 +6,16 @@ from keras.models import Sequential
 from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout
 from keras.utils import to_categorical
 
+import main
+
 class convolutional_neural_network():
-    class_names = ["Good", "Bad"]
-
     def classify(self, image):
-        predictions = self.model.predict(image)
-        max = np.argmax(predictions)
-        return self.class_names[max]
+        return np.argmax(self.model.predict(image))
 
-    def resize(self, image, new_width):
-        new_height = int(image.shape[0]/(image.shape[1]/new_width))
+    def resize(self, image):
+        new_height = int(image.shape[0]*self.resize_factor)
+        new_width = int(image.shape[1]*self.resize_factor)
+
         new = np.empty([new_height,new_width,3])
         factor = image.shape[0]/new_height
 
@@ -26,18 +26,20 @@ class convolutional_neural_network():
 
         return new
 
-    def data_prep(self):
+    def data_prep(self, resize_factor):
+        self.resize_factor = resize_factor
+
         img = mpimg.imread('images/train_image1.jpg')[:,:,:-1]
-        np_im1 = self.resize(img, 480)
+        np_im1 = self.resize(img)
 
         img = mpimg.imread('images/train_image2.jpg')[:,:,:-1]
-        np_im2 = self.resize(img, 480)
+        np_im2 = self.resize(img)
 
         img = mpimg.imread('images/test_image1.jpg')[:,:,:-1]
-        np_im3 = self.resize(img, 480)
+        np_im3 = self.resize(img)
 
         img = mpimg.imread('images/test_image2.jpg')[:,:,:-1]
-        np_im4 = self.resize(img, 480)
+        np_im4 = self.resize(img)
 
         self.train_images = np.array([np_im1, np_im2])/255.0
         self.train_labels = np.array([[0],[1]])
