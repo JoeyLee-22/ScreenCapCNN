@@ -8,7 +8,8 @@ def start(cnn_instance, minutes=5):
 
     while(True):
         og_image = cv2.cvtColor(np.array(pyautogui.screenshot()), cv2.COLOR_RGB2BGR)
-        result = cnn_instance.classify(np.array([cnn_instance.resize(og_image, 480)]))
+
+        result = cnn_instance.classify(np.array([cnn_instance.resize(og_image)]))
 
         if result == 0:
             cv2.imwrite("images/good.jpg", og_image)
