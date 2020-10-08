@@ -1,6 +1,7 @@
 # Byte-compiled / optimized / DLL files
+train_images
+test_images
 images
-screenshot.jpg
 __pycache__/
 *.py[cod]
 *$py.class
