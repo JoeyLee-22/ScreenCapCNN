@@ -2,14 +2,15 @@ import numpy as np
 import time
 import cv2
 import pyautogui
+from resize import resize
 
-def start(cnn_instance, minutes=5):
+def start(cnn_instance, new_height, new_width, minutes=5):
     class_names = ["Good", "Bad"]
 
     while(True):
         og_image = cv2.cvtColor(np.array(pyautogui.screenshot()), cv2.COLOR_RGB2BGR)
 
-        result = cnn_instance.classify(np.array([cnn_instance.resize(og_image)]))
+        result = cnn_instance.classify(np.array([resize(og_image, new_height, new_width)]))
 
         if result == 0:
             cv2.imwrite("images/good.jpg", og_image)
