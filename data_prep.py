@@ -23,6 +23,12 @@ def data_prep(new_height, new_width):
     pickle.dump(train_images, open('dataset/train_images.pckl', 'wb'))
     pickle.dump(test_images, open('dataset/test_images.pckl', 'wb'))
 
+    train_labels = np.array([[1],[0]])
+    test_labels = np.array([[0],[1]])
+
+    pickle.dump(train_labels, open('dataset/train_labels.pckl', 'wb'))
+    pickle.dump(test_labels, open('dataset/test_labels.pckl', 'wb'))
+
     # f = plt.figure()
     # f.add_subplot(2,1, 1)
     # plt.imshow(self.train_images[0].astype('uint8'))
