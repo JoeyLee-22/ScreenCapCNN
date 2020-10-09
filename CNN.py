@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from keras.models import Sequential
 from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout
 from keras.utils import to_categorical
+from data_prep import data_preparation
 
 import main
 
@@ -28,6 +29,9 @@ class convolutional_neural_network():
         return (train_images,train_labels), (test_images,test_labels)
 
     def run(self, epochs=10, train=True, evaluate=True, plot=True, data_prep=True):
+        if data_prep:
+            data_preparation(self.new_height, self.new_width)
+
         if train:
             (train_images, train_labels), (test_images, test_labels) = self.load_data()
 
@@ -53,11 +57,11 @@ class convolutional_neural_network():
             end_time = time.time() - start_time
 
             if end_time > 3600:
-                print('Total Training Time: %shrs\n\n' % round((end_time/3600),2))
+                print('Total Training Time: %dhr %.1fmin\n\n' % (int(end_time/3600),((end_time-int(end_time/3600)*3600)/60)))
             elif end_time > 60:
-                print("Total Training Time: %smins\n\n" % round((end_time/60),2))
+                print("Total Training Time: %dmin %.2fs\n\n" % ((end_time/60), (end_time-int(end_time/60)*60)))
             else:
-                print("Total Training Time: %ss\n\n" % round(end_time,2))
+                print("Total Training Time: %.2fs\n\n" % end_time)
 
         if evaluate:
             print("TESTING")
