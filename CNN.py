@@ -7,8 +7,6 @@ import matplotlib.pyplot as plt
 from keras.models import Sequential
 from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout
 from keras.utils import to_categorical
-from dataset.test_labels import y_test
-from dataset.train_labels import y_train
 
 import main
 
@@ -24,8 +22,8 @@ class convolutional_neural_network():
         train_images = pickle.load(open('dataset/train_images.pckl', 'rb'))
         test_images = pickle.load(open('dataset/test_images.pckl', 'rb'))
 
-        train_labels = to_categorical(y_train)
-        test_labels = to_categorical(y_test)
+        train_labels = to_categorical(pickle.load(open('dataset/train_labels.pckl', 'rb')))
+        test_labels = to_categorical(pickle.load(open('dataset/test_labels.pckl', 'rb')))
 
         return (train_images,train_labels), (test_images,test_labels)
 
