@@ -4,7 +4,7 @@ import matplotlib.image as mpimg
 import numpy as np
 from resize import resize
 
-def data_prep(new_height, new_width):
+def data_preparation(new_height, new_width):
     train_images = np.empty([len(os.listdir('train_images')),new_height,new_width,3])
     test_images = np.empty([len(os.listdir('test_images')),new_height,new_width,3])
 
