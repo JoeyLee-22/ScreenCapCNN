@@ -1,6 +1,6 @@
 import numpy as np
 
-def resize(image, new_height, new_width):
+def my_resize(image, new_height, new_width):
     new = np.empty([new_height,new_width,3])
 
     row_factor = int(image.shape[0]/new_height)
