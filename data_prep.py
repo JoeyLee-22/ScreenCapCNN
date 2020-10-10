@@ -51,7 +51,7 @@ def label_preparation(num_labels, label, type):
         for i in range (num_labels-1):
             train_labels = np.vstack((train_labels, np.array([label])))
         pickle.dump(train_labels, open('dataset/train_labels.pckl', 'ab'))
-    elif type=='test_labels':
+    else:
         test_labels = np.concatenate((test_labels, np.array([label])))
         for i in range (num_labels-1):
             test_labels = np.vstack((test_labels, np.array([label])))
