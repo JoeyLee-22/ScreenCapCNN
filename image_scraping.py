@@ -4,6 +4,7 @@ import os
 import requests 
 from tqdm import tqdm
 from bs4 import BeautifulSoup 
+from data_prep import image_preparation, label_preparation
 
 Google_Image = 'https://www.google.com/search?site=&tbm=isch&source=hp&biw=1873&bih=990&'
 
@@ -16,22 +17,31 @@ u_agnt = {
     'Connection': 'keep-alive',
 }
 
-print('\n\n--- STARTED SCRAPING ---\n')
+print('\n\n--- SCRAPING STARTED ---\n')
 
-def download_google_images():
+def download_google_images(new_height, new_width):
     first = True
     while True:
         if input('Continue? (y/n): ').lower() == 'n': break
 
         if first:
-            folder = input('Enter the folder you want the images to go to: ')
+            if input('Enter the folder you want the images to go to (train/test): ') == 'train':
+                folder = 'train_images'
+            else:
+                folder = 'test_images'
             first = False
         elif input('Same Folder? (y/n): ') == 'n':
-            folder = input('Enter the folder you want the images to go to: ')
+            if input('Enter the folder you want the images to go to (train/test): ') == 'train':
+                folder = 'train_images'
+            else:
+                folder = 'test_images'
+            label = int(input('Enter the label for this batch: '))
         if not os.path.exists(folder): os.mkdir(folder)
 
         data = input('Enter your search keyword: ')
         num_images = int(input('Enter the number of images you want: '))
+
+        label_preparation(num_images, label, folder)
         
         print('\nSearching Images....')
         
@@ -69,3 +79,5 @@ def download_google_images():
         pbar.close()
 
         print('Download Complete\n')
+
+    image_preparation(new_height, new_width)
