@@ -12,10 +12,10 @@ def start(cnn_instance, new_height, new_width, minutes=5):
 
         result = cnn_instance.classify(np.array([resize(og_image, new_height, new_width)]))
 
-        if result == 0:
-            cv2.imwrite("images/good.jpg", og_image)
-        else:
-            cv2.imwrite("images/bad.jpg", og_image)
+        # if result == 0:
+        #     cv2.imwrite("images/good.jpg", og_image)
+        # else:
+        #     cv2.imwrite("images/bad.jpg", og_image)
         print(class_names[result])
         
         for secs in range (int(minutes*60)):
