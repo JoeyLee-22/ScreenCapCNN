@@ -43,29 +43,16 @@ def image_preparation(new_height, new_width):
     pickle.dump(test_images, open('dataset/test_images.pckl', 'wb'))
 
 def label_preparation(num_labels, label, type):
-    if os.path.exists("dataset/train_labels.pckl")==0: 
-        train_labels = np.array([])
-        train_empty=True
-    if os.path.exists("dataset/test_labels.pckl")==0: 
-        test_labels = np.array([])
-        test_empty=True
+    train_labels = np.array([])
+    test_labels = np.array([])
 
-    if train_empty and type=='train_labels':
+    if type=='train_labels':
         train_labels = np.concatenate((train_labels, np.array([label])))
         for i in range (num_labels-1):
             train_labels = np.vstack((train_labels, np.array([label])))
-        train_empty=False
-    elif type=='train_labels':
-        for i in range (num_labels):
-            train_labels = np.vstack((train_labels, np.array([label])))
-    elif test_empty and type=='test_labels':
+        pickle.dump(train_labels, open('dataset/train_labels.pckl', 'ab'))
+    elif type=='test_labels':
         test_labels = np.concatenate((test_labels, np.array([label])))
         for i in range (num_labels-1):
             test_labels = np.vstack((test_labels, np.array([label])))
-        test_empty=False
-    else:
-        for i in range (num_labels):
-            test_labels = np.vstack((test_labels, np.array([label])))        
-
-    pickle.dump(train_labels, open('dataset/train_labels.pckl', 'ab'))
-    pickle.dump(test_labels, open('dataset/test_labels.pckl', 'ab'))
+        pickle.dump(test_labels, open('dataset/test_labels.pckl', 'ab'))  
