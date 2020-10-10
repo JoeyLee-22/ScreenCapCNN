@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 from keras.models import Sequential
 from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout
 from keras.utils import to_categorical
-from data_prep import data_preparation
 from image_scraping import download_google_images
 
 class convolutional_neural_network():
@@ -28,11 +27,8 @@ class convolutional_neural_network():
         return (train_images,train_labels), (test_images,test_labels)
 
     def run(self, epochs=10, train=True, evaluate=True, plot=True, data_prep=True, get_data=True):
-        if get_data:
-            download_google_images()
-
         if data_prep:
-            data_preparation(self.new_height, self.new_width)
+            download_google_images(self.new_height, self.new_width)
             print('\n')
 
         if train:
