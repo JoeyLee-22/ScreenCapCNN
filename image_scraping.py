@@ -26,22 +26,26 @@ def download_google_images(new_height, new_width):
 
         if first:
             if input('Enter the folder you want the images to go to (train/test): ') == 'train':
-                folder = 'train_images'
+                label_folder = 'train_labels'
+                image_folder = 'train_images'
             else:
-                folder = 'test_images'
+                label_folder = 'test_labels'
+                image_folder = 'test_images'
             first = False
         elif input('Same Folder? (y/n): ') == 'n':
             if input('Enter the folder you want the images to go to (train/test): ') == 'train':
-                folder = 'train_images'
+                label_folder = 'train_labels'
+                image_folder = 'train_images'
             else:
-                folder = 'test_images'
-        if not os.path.exists(folder): os.mkdir(folder)
+                label_folder = 'test_labels'
+                image_folder = 'test_images'
+        if not os.path.exists(image_folder): os.mkdir(image_folder)
 
         data = input('Enter your search keyword: ')
         label = int(input('Enter the label for this batch: '))
         num_images = int(input('Enter the number of images you want: '))
 
-        label_preparation(num_images, label, folder)
+        label_preparation(num_images, label, label_folder)
         
         print('\nSearching Images....')
         
@@ -72,7 +76,7 @@ def download_google_images(new_height, new_width):
         for i, imagelink in enumerate(imagelinks):
             response = requests.get(imagelink)
             
-            imagename = folder + '/' + data + str(i+1) + '.jpg'
+            imagename = image_folder + '/' + data + str(i+1) + '.jpg'
             with open(imagename, 'wb') as file:
                 file.write(response.content)
             pbar.update(1)
