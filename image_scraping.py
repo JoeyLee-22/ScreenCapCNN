@@ -1,3 +1,5 @@
+# pyright: reportUnboundVariable=false
+
 import os
 import requests 
 from tqdm import tqdm
@@ -14,46 +16,56 @@ u_agnt = {
     'Connection': 'keep-alive',
 }
 
-def download_images():
-    folder = input('Enter the folder you want the images to go to: ')
-    if not os.path.exists(folder):
-        os.mkdir(folder)
-    data = input('Enter your search keyword: ')
-    num_images = int(input('Enter the number of images you want: '))
-    
-    print('\nSearching Images....')
-    
-    search_url = Google_Image + 'q=' + data 
-    
-    response = requests.get(search_url, headers=u_agnt)
-    html = response.text
-    
-    b_soup = BeautifulSoup(html, 'html.parser') 
-    results = b_soup.findAll('img', {'class': 'rg_i Q4LuWd'})
+print('\n\n--- STARTED SCRAPING ---\n')
 
-    count = 0
-    imagelinks= []
-    for res in results:
-        try:
-            link = res['data-src']
-            imagelinks.append(link)
-            count += 1
-            if (count >= num_images):
-                break
-        except KeyError:
-            continue
-    
-    print(f'Found {len(imagelinks)} images')
-    print('\nStarted downloading...')
+def download_google_images():
+    first = True
+    while True:
+        if input('Continue? (y/n): ').lower() == 'n': break
 
-    pbar = tqdm(total=len(imagelinks))
-    for i, imagelink in enumerate(imagelinks):
-        response = requests.get(imagelink)
+        if first:
+            folder = input('Enter the folder you want the images to go to: ')
+            first = False
+        elif input('Same Folder? (y/n): ') == 'n':
+            folder = input('Enter the folder you want the images to go to: ')
+        if not os.path.exists(folder): os.mkdir(folder)
+
+        data = input('Enter your search keyword: ')
+        num_images = int(input('Enter the number of images you want: '))
         
-        imagename = folder + '/' + data + str(i+1) + '.jpg'
-        with open(imagename, 'wb') as file:
-            file.write(response.content)
-        pbar.update(1)
-    pbar.close()
-    
-    print('Download Complete\n')
+        print('\nSearching Images....')
+        
+        search_url = Google_Image + 'q=' + data 
+        
+        response = requests.get(search_url, headers=u_agnt)
+        html = response.text
+        
+        b_soup = BeautifulSoup(html, 'html.parser') 
+        results = b_soup.findAll('img', {'class': 'rg_i Q4LuWd'})
+
+        count = 0
+        imagelinks= []
+        for res in results:
+            try:
+                link = res['data-src']
+                imagelinks.append(link)
+                count += 1
+                if (count >= num_images):
+                    break
+            except KeyError:
+                continue
+        
+        print(f'Found {len(imagelinks)} images')
+        print('\nStarted downloading...')
+
+        pbar = tqdm(total=len(imagelinks))
+        for i, imagelink in enumerate(imagelinks):
+            response = requests.get(imagelink)
+            
+            imagename = folder + '/' + data + str(i+1) + '.jpg'
+            with open(imagename, 'wb') as file:
+                file.write(response.content)
+            pbar.update(1)
+        pbar.close()
+
+        print('Download Complete\n')
