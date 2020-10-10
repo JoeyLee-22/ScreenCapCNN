@@ -1,3 +1,5 @@
+# pyright: reportUnboundVariable=false
+
 import os
 import pickle
 import matplotlib.image as mpimg
@@ -5,7 +7,7 @@ import numpy as np
 from tqdm import tqdm
 from resize import resize
 
-def data_preparation(new_height, new_width):
+def image_preparation(new_height, new_width):
     train_images = np.empty([len(os.listdir('train_images')),new_height,new_width,3])
     test_images = np.empty([len(os.listdir('test_images')),new_height,new_width,3])
 
@@ -40,22 +42,30 @@ def data_preparation(new_height, new_width):
     pickle.dump(train_images, open('dataset/train_images.pckl', 'wb'))
     pickle.dump(test_images, open('dataset/test_images.pckl', 'wb'))
 
-    train_labels = np.array([[1],[0]])
-    test_labels = np.array([[0],[1]])
+def label_preparation(num_labels, label, type):
+    if os.path.getsize("dataset/train_labels.pckl")==0: 
+        train_labels = np.array([])
+        train_empty=True
+    if os.path.getsize("dataset/test_labels.pckl")==0: 
+        test_labels = np.array([])
+        test_empty=True
 
-    pickle.dump(train_labels, open('dataset/train_labels.pckl', 'wb'))
-    pickle.dump(test_labels, open('dataset/test_labels.pckl', 'wb'))
+    if train_empty and type=='train_labels':
+        train_labels = np.concatenate((train_labels, np.array([label])))
+        for i in range (num_labels-1):
+            train_labels = np.vstack((train_labels, np.array([label])))
+        train_empty=False
+    elif type=='train_labels':
+        for i in range (num_labels):
+            train_labels = np.vstack((train_labels, np.array([label])))
+    elif test_empty and type=='test_labels':
+        test_labels = np.concatenate((test_labels, np.array([label])))
+        for i in range (num_labels-1):
+            test_labels = np.vstack((test_labels, np.array([label])))
+        test_empty=False
+    else:
+        for i in range (num_labels):
+            test_labels = np.vstack((test_labels, np.array([label])))        
 
-    # f = plt.figure()
-    # f.add_subplot(2,1, 1)
-    # plt.imshow(self.train_images[0].astype('uint8'))
-    # f.add_subplot(2,1, 2)
-    # plt.imshow(self.train_images[1].astype('uint8'))
-    # plt.show()
-
-    # f = plt.figure()
-    # f.add_subplot(2,1, 1)
-    # plt.imshow(self.test_images[0].astype('uint8'))
-    # f.add_subplot(2,1, 2)
-    # plt.imshow(self.test_images[1].astype('uint8'))
-    # plt.show()
+    pickle.dump(train_labels, open('dataset/train_labels.pckl', 'ab'))
+    pickle.dump(test_labels, open('dataset/test_labels.pckl', 'ab'))
