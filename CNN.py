@@ -9,8 +9,6 @@ from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout
 from keras.utils import to_categorical
 from data_prep import data_preparation
 
-import main
-
 class convolutional_neural_network():
     def __init__(self, new_height, new_width):
         self.new_height = new_height
@@ -31,6 +29,7 @@ class convolutional_neural_network():
     def run(self, epochs=10, train=True, evaluate=True, plot=True, data_prep=True):
         if data_prep:
             data_preparation(self.new_height, self.new_width)
+            print('\n')
 
         if train:
             (train_images, train_labels), (test_images, test_labels) = self.load_data()
