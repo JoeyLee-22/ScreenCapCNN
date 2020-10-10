@@ -43,10 +43,10 @@ def image_preparation(new_height, new_width):
     pickle.dump(test_images, open('dataset/test_images.pckl', 'wb'))
 
 def label_preparation(num_labels, label, type):
-    if os.path.getsize("dataset/train_labels.pckl")==0: 
+    if os.path.exists("dataset/train_labels.pckl")==0: 
         train_labels = np.array([])
         train_empty=True
-    if os.path.getsize("dataset/test_labels.pckl")==0: 
+    if os.path.exists("dataset/test_labels.pckl")==0: 
         test_labels = np.array([])
         test_empty=True
 
