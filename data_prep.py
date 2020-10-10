@@ -13,7 +13,11 @@ def data_preparation(new_height, new_width):
     pbar = tqdm(total=len(os.listdir('train_images')))
     counter=0
     for filename in os.listdir('train_images'):
-        img = mpimg.imread('train_images/%s' % filename)[:,:,:-1]
+        img = mpimg.imread('train_images/%s' % filename)
+        # if img.shape[2] == 3:
+        #     train_images[counter] = resize(img, new_height, new_width)
+        # else:
+        #     train_images[counter] = resize(img[:,:,:-1], new_height, new_width)
         train_images[counter] = resize(img, new_height, new_width)
         pbar.update(1)
         counter+=1
@@ -24,6 +28,10 @@ def data_preparation(new_height, new_width):
     counter=0
     for filename in os.listdir('test_images'):
         img = mpimg.imread('test_images/%s' % filename)[:,:,:-1]
+        # if img.shape[2] == 3:
+        #     test_images[counter] = resize(img, new_height, new_width)
+        # else:
+        #     test_images[counter] = resize(img[:,:,:-1], new_height, new_width)
         test_images[counter] = resize(img, new_height, new_width)
         pbar.update(1)
         counter+=1
