@@ -38,6 +38,7 @@ def download_google_images(new_height, new_width):
         if not os.path.exists(folder): os.mkdir(folder)
 
         data = input('Enter your search keyword: ')
+        label = int(input('Enter the label for this batch: '))
         num_images = int(input('Enter the number of images you want: '))
 
         label_preparation(num_images, label, folder)
