@@ -17,9 +17,8 @@ u_agnt = {
     'Connection': 'keep-alive',
 }
 
-print('\n\n--- SCRAPING STARTED ---\n')
-
 def download_google_images(new_height, new_width):
+    print('\n\n--- SCRAPING STARTED ---\n')
     first = True
     while True:
         if input('Continue? (y/n): ').lower() == 'n': break
@@ -41,7 +40,7 @@ def download_google_images(new_height, new_width):
                 image_folder = 'test_images'
         if not os.path.exists(image_folder): os.mkdir(image_folder)
 
-        data = input('Enter your search keyword: ')
+        data = input('Enter your search keyword(s): ')
         label = int(input('Enter the label for this batch: '))
         num_images = int(input('Enter the number of images you want: '))
 
