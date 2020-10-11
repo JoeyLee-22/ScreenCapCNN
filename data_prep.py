@@ -45,12 +45,19 @@ def label_preparation(num_labels, label, type):
     train_labels = np.array([])
     test_labels = np.array([])
 
+    if not os.path.exists("dataset/train_labels.pckl"):
+        pickle.dump(0, open('dataset/num_train_labels.pckl', 'wb'))
+    if not os.path.exists("dataset/test_labels.pckl"):
+        pickle.dump(0, open('dataset/num_test_labels.pckl', 'wb'))
+
     if type=='train_labels':
+        pickle.dump(pickle.load(open('dataset/num_train_labels.pckl', 'rb'))+num_labels, open('dataset/num_train_labels.pckl', 'wb'))
         train_labels = np.concatenate((train_labels, np.array([label])))
         for i in range (num_labels-1):
             train_labels = np.vstack((train_labels, np.array([label])))
         pickle.dump(train_labels, open('dataset/train_labels.pckl', 'ab'))
     else:
+        pickle.dump(pickle.load(open('dataset/num_test_labels.pckl', 'rb'))+num_labels, open('dataset/num_test_labels.pckl', 'wb'))
         test_labels = np.concatenate((test_labels, np.array([label])))
         for i in range (num_labels-1):
             test_labels = np.vstack((test_labels, np.array([label])))
