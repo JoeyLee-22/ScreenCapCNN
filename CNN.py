@@ -2,6 +2,7 @@
 
 import pickle
 import time
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 from keras.models import Sequential
@@ -26,13 +27,22 @@ class convolutional_neural_network():
 
         return (train_images,train_labels), (test_images,test_labels)
 
-    def run(self, epochs=10, train=True, evaluate=True, plot=True, data_prep=True, get_data=True):
+    def run(self, epochs=10, train=True, evaluate=True, plot=True, data_prep=True, clear_data=False):
+        if clear_data:
+            if input("CONFIRM DATA DELETION (y/n): ")=='y':
+                os.system("sh clear_data.sh")
+        
         if data_prep:
             download_google_images(self.new_height, self.new_width)
             print('\n')
 
         if train:
             (train_images, train_labels), (test_images, test_labels) = self.load_data()
+
+            print(train_images.shape)
+            print(train_labels.shape)
+            print(test_images.shape)
+            print(test_labels.shape)
 
             train_images = train_images/255.0
             test_images = test_images/255.0
