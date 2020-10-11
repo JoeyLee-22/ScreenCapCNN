@@ -5,7 +5,8 @@ import pickle
 import matplotlib.image as mpimg
 import numpy as np
 from tqdm import tqdm
-from resize import resize
+from PIL import Image
+from resize import my_resize
 
 def image_preparation(new_height, new_width):
     train_images = np.empty([len(os.listdir('train_images')),new_height,new_width,3])
@@ -16,11 +17,10 @@ def image_preparation(new_height, new_width):
     counter=0
     for filename in os.listdir('train_images'):
         img = mpimg.imread('train_images/%s' % filename)
-        # if img.shape[2] == 3:
-        #     train_images[counter] = resize(img, new_height, new_width)
-        # else:
-        #     train_images[counter] = resize(img[:,:,:-1], new_height, new_width)
-        train_images[counter] = resize(img, new_height, new_width)
+        if img.shape[0] < new_height or img.shape[1] < new_width:
+            train_images[counter] = np.array(Image.open('train_images/%s' % filename).resize((new_width, new_height)).convert("RGB"))
+        else:
+            train_images[counter] = my_resize(img, new_height, new_width)
         pbar.update(1)
         counter+=1
     pbar.close()
@@ -29,12 +29,11 @@ def image_preparation(new_height, new_width):
     pbar = tqdm(total=len(os.listdir('test_images')))
     counter=0
     for filename in os.listdir('test_images'):
-        img = mpimg.imread('test_images/%s' % filename)[:,:,:-1]
-        # if img.shape[2] == 3:
-        #     test_images[counter] = resize(img, new_height, new_width)
-        # else:
-        #     test_images[counter] = resize(img[:,:,:-1], new_height, new_width)
-        test_images[counter] = resize(img, new_height, new_width)
+        img = mpimg.imread('test_images/%s' % filename)
+        if img.shape[0] < new_height or img.shape[1] < new_width:
+            test_images[counter] = np.array(Image.open('test_images/%s' % filename).resize((new_width, new_height)).convert("RGB"))
+        else:
+            test_images[counter] = my_resize(img, new_height, new_width)
         pbar.update(1)
         counter+=1
     pbar.close()
