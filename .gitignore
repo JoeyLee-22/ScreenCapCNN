@@ -2,6 +2,9 @@
 images
 __pycache__/
 test.py
+dataset
+test_images
+train_images
 *.py[cod]
 *$py.class
 
