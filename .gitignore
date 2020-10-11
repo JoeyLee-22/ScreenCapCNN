@@ -1,7 +1,7 @@
 # Byte-compiled / optimized / DLL files
 images
 __pycache__
-test.py
+test.py 
 *.py[cod]
 *$py.class
 
