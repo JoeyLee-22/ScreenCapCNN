@@ -22,34 +22,37 @@ class convolutional_neural_network():
         train_images = pickle.load(open('dataset/train_images.pckl', 'rb'))
         test_images = pickle.load(open('dataset/test_images.pckl', 'rb'))
 
-        # train_labels = to_categorical(pickle.load(open('dataset/train_labels.pckl', 'rb')))
-        # test_labels = to_categorical(pickle.load(open('dataset/test_labels.pckl', 'rb')))
-
+        f =  open('dataset/train_labels.pckl', 'rb')
         train_labels = []
-        with open('dataset/train_labels.pckl', 'rb') as fr:
+        while True:
             try:
-                while True:
-                    train_labels.append(pickle.load(fr))
+                train_labels.append(pickle.load(f))
             except EOFError:
-                pass
+                break
+        train_labels = (np.array(train_labels))[:,:,0]
+        train_labels.resize(pickle.load(open('dataset/num_train_labels.pckl', 'rb')),1)
 
+        f =  open('dataset/test_labels.pckl', 'rb')
         test_labels = []
-        with open('dataset/test_labels.pckl', 'rb') as fr:
+        while True:
             try:
-                while True:
-                    test_labels.append(pickle.load(fr))
+                test_labels.append(pickle.load(f))
             except EOFError:
-                pass
+                break
+        test_labels = (np.array(test_labels))[:,:,0]
+        test_labels.resize(pickle.load(open('dataset/num_test_labels.pckl', 'rb')),1)
 
-        train_labels = to_categorical((np.array(train_labels))[0,:,:])
-        test_labels = to_categorical((np.array(test_labels))[0,:,:])
+        train_labels = to_categorical((np.array(train_labels)))
+        test_labels = to_categorical((np.array(test_labels)))
 
         return (train_images,train_labels), (test_images,test_labels)
 
     def run(self, epochs=10, train=True, evaluate=True, plot=True, data_prep=True, clear_data=False):
         if clear_data:
-            if input("CONFIRM DATA DELETION (y/n): ")=='y':
+            if input("\nCONFIRM DATA DELETION (y/n): ")=='y':
                 os.system("sh clear_data.sh")
+            else:
+                clear_data=False
         
         if data_prep or clear_data:
             download_google_images(self.new_height, self.new_width)
