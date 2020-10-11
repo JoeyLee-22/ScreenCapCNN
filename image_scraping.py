@@ -18,6 +18,8 @@ u_agnt = {
 }
 
 def download_google_images(new_height, new_width):
+    if not os.path.exists('dataset'): os.mkdir('dataset')
+
     print('\n\n--- SCRAPING STARTED ---\n')
     first = True
     while True:
