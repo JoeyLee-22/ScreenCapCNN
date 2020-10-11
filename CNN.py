@@ -22,8 +22,27 @@ class convolutional_neural_network():
         train_images = pickle.load(open('dataset/train_images.pckl', 'rb'))
         test_images = pickle.load(open('dataset/test_images.pckl', 'rb'))
 
-        train_labels = to_categorical(pickle.load(open('dataset/train_labels.pckl', 'rb')))
-        test_labels = to_categorical(pickle.load(open('dataset/test_labels.pckl', 'rb')))
+        # train_labels = to_categorical(pickle.load(open('dataset/train_labels.pckl', 'rb')))
+        # test_labels = to_categorical(pickle.load(open('dataset/test_labels.pckl', 'rb')))
+
+        train_labels = []
+        with open('dataset/train_labels.pckl', 'rb') as fr:
+            try:
+                while True:
+                    train_labels.append(pickle.load(fr))
+            except EOFError:
+                pass
+
+        test_labels = []
+        with open('dataset/test_labels.pckl', 'rb') as fr:
+            try:
+                while True:
+                    test_labels.append(pickle.load(fr))
+            except EOFError:
+                pass
+
+        train_labels = to_categorical((np.array(train_labels))[0,:,:])
+        test_labels = to_categorical((np.array(test_labels))[0,:,:])
 
         return (train_images,train_labels), (test_images,test_labels)
 
@@ -32,7 +51,7 @@ class convolutional_neural_network():
             if input("CONFIRM DATA DELETION (y/n): ")=='y':
                 os.system("sh clear_data.sh")
         
-        if data_prep:
+        if data_prep or clear_data:
             download_google_images(self.new_height, self.new_width)
             print('\n')
 
