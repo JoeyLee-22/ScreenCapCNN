@@ -1,8 +1,7 @@
 # pyright: reportUnboundVariable=false
 
 import os
-import requests
-import pickle
+import requests 
 from tqdm import tqdm
 from bs4 import BeautifulSoup 
 from data_prep import image_preparation, label_preparation
@@ -19,17 +18,12 @@ u_agnt = {
 }
 
 def download_google_images(new_height, new_width):
-    if not os.path.exists("dataset/train_labels.pckl"):
-        pickle.dump(0, open('dataset/num_train_labels.pckl', 'wb'))
-    if not os.path.exists("dataset/test_labels.pckl"):
-        pickle.dump(0, open('dataset/num_test_labels.pckl', 'wb'))
-
-    if not os.path.exists('dataset'): os.mkdir('dataset') 
+    if not os.path.exists('dataset'): os.mkdir('dataset')
 
     print('\n\n--- SCRAPING STARTED ---\n')
     first = True
     while True:
-        if input('Continue Scraping? (y/n): ').lower() == 'n': break
+        if input('Continue? (y/n): ').lower() == 'n': break
 
         if first:
             if input('Enter the folder you want the images to go to (train/test): ') == 'train':
@@ -52,6 +46,8 @@ def download_google_images(new_height, new_width):
         label = int(input('Enter the label for this batch: '))
         num_images = int(input('Enter the number of images you want: '))
 
+        label_preparation(num_images, label, label_folder)
+        
         print('\nSearching Images....')
         
         search_url = Google_Image + 'q=' + data 
@@ -76,13 +72,6 @@ def download_google_images(new_height, new_width):
         
         print(f'Found {len(imagelinks)} images')
         print('\nStarted downloading...')
-
-        label_preparation(len(imagelinks), label, label_folder)
-
-        if label_folder=='train_labels':
-            pickle.dump(pickle.load(open('dataset/num_train_labels.pckl', 'rb'))+len(imagelinks), open('dataset/num_train_labels.pckl', 'wb'))
-        else:
-            pickle.dump(pickle.load(open('dataset/num_test_labels.pckl', 'rb'))+len(imagelinks), open('dataset/num_test_labels.pckl', 'wb'))
 
         pbar = tqdm(total=len(imagelinks))
         for i, imagelink in enumerate(imagelinks):
