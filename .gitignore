@@ -1,7 +1,9 @@
 # Byte-compiled / optimized / DLL files
-images
 __pycache__
-test.py 
+test.py
+train_images
+test_images
+dataset
 *.py[cod]
 *$py.class
 
