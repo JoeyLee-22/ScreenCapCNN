@@ -2,7 +2,7 @@
 __pycache__
 test.py
 train_images
-test_images
+test_images 
 dataset
 *.py[cod]
 *$py.class
