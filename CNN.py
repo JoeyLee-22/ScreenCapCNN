@@ -48,11 +48,9 @@ class convolutional_neural_network():
 
         return (train_images,train_labels), (test_images,test_labels)
 
-    def run(self, epochs=10, load_model=False, train=True, evaluate=True, plot=True, data_prep=True, clear_data=False):
+    def run(self, epochs=10, load_model=False, save_model=False, train=True, evaluate=True, plot=True, data_prep=True, clear_data=False):        
         if load_model:
             (train_images, train_labels), (test_images, test_labels) = self.load_data()
-        
-        if load_model:
             if not os.path.exists('%s.h5' % self.model_name):
                 print("\nNO MODEL AVAILABLE\n")
                 load_model=False
@@ -105,6 +103,7 @@ class convolutional_neural_network():
             else:
                 print("Total Training Time: %.2fs\n\n" % end_time)
                 
+        if save_model and not load_model:
             self.model.save('%s.h5' % self.model_name)
 
         if evaluate:
