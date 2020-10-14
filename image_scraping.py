@@ -28,32 +28,52 @@ def download_google_images(new_height, new_width, load_model):
 
     scrape = not load_model
     first = True
+    stop = False
+    file_choice = 'N/A'
     while scrape:
         if first: print('\n\n--- SCRAPING STARTED ---\n')
-            
-        if input('Continue Scraping? (y/n): ').lower() == 'n': break
+        
+        while True:
+            user_input = input('Continue Scraping? (y/n): ').lower()
+            if  user_input == 'n':
+                stop = True
+                break
+            elif user_input == 'y':
+                break
+        if stop == True:
+            break
 
         if first:
-            file_choice = input('Enter the folder you want the images to go to (train/test): ')
-            if file_choice == 'train':
-                label_folder = 'train_labels'
-                image_folder = 'train_images'
-            elif file_choice == 'test':
-                label_folder = 'test_labels'
-                image_folder = 'test_images'
-            else:
-                continue
-            first = False
-        elif input('Same Folder? (y/n): ') == 'n':
-            file_choice = input('Enter the folder you want the images to go to (train/test): ')
-            if file_choice == 'train': 
-                label_folder = 'train_labels'
-                image_folder = 'train_images'
-            elif file_choice == 'test':
-                label_folder = 'test_labels'
-                image_folder = 'test_images'
-            else:
-                continue
+            while True: 
+                file_choice = input('Enter the folder you want the images to go to (train/test): ')
+                if file_choice == 'train':
+                    label_folder = 'train_labels'
+                    image_folder = 'train_images'
+                    break
+                elif file_choice == 'test':
+                    label_folder = 'test_labels'
+                    image_folder = 'test_images'
+                    break
+        while True:
+            if first:
+                first = False
+                break
+            user_choice = input('Current Folder: %s; Same Folder? (y/n): ' % file_choice)
+            if  user_choice == 'n':
+                while True:
+                    file_choice = input('Enter the folder you want the images to go to (train/test): ')
+                    if file_choice == 'train': 
+                        label_folder = 'train_labels'
+                        image_folder = 'train_images'
+                        break
+                    elif file_choice == 'test':
+                        label_folder = 'test_labels'
+                        image_folder = 'test_images'
+                        break
+                break
+            elif user_choice == 'y':
+                break
+        
         if not os.path.exists(image_folder): os.mkdir(image_folder)
 
         data = input('Enter your search keyword(s): ')
