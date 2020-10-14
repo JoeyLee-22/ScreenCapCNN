@@ -49,7 +49,8 @@ class convolutional_neural_network():
         return (train_images,train_labels), (test_images,test_labels)
 
     def run(self, epochs=10, load_model=False, train=True, evaluate=True, plot=True, data_prep=True, clear_data=False):
-        (train_images, train_labels), (test_images, test_labels) = self.load_data()
+        if load_model:
+            (train_images, train_labels), (test_images, test_labels) = self.load_data()
         
         if load_model:
             if not os.path.exists('%s.h5' % self.model_name):
@@ -74,6 +75,8 @@ class convolutional_neural_network():
             print('\n')
 
         if train and not load_model:
+            (train_images, train_labels), (test_images, test_labels) = self.load_data()
+                    
             train_images = train_images/255.0
             test_images = test_images/255.0
 
