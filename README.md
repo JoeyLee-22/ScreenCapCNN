@@ -11,12 +11,12 @@ TO RUN: use "python3 main.py"
 
 TO CONFIGURE: open main.py and set variables in cnn.run() to your preferences
 
-  - epochs: number of times the CNN goes through all the training data
-  - train: whether or not the program trains
-  - evaluate: whether or not the program tests the model on test data
-  - plot: whether or not the program plots the loss and accuracy over epochs
-  - data_prep: whether or not the program starts web scraping for training and testing data
-  - clear_data: whether or not the program resets all the data and asks for new ones
+  - epochs(any int): number of times the CNN goes through all the training data 
+  - train(T/F): whether or not the program trains
+  - evaluate(T/F): whether or not the program tests the model on test data
+  - plot(T/F): whether or not the program plots the loss and accuracy over epochs
+  - data_prep(T/F): whether or not the program starts web scraping for training and testing data
+  - clear_data(T/F): whether or not the program resets all the data and asks for new ones
 
 - - - 
 ### Libraries Used
