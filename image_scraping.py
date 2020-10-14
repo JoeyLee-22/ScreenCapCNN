@@ -18,7 +18,7 @@ u_agnt = {
     'Connection': 'keep-alive',
 }
 
-def download_google_images(new_height, new_width):
+def download_google_images(new_height, new_width, load_model):
     if not os.path.exists('dataset'): os.mkdir('dataset') 
     
     if not os.path.exists("dataset/train_labels.pckl"):
@@ -26,9 +26,11 @@ def download_google_images(new_height, new_width):
     if not os.path.exists("dataset/test_labels.pckl"):
         pickle.dump(0, open('dataset/num_test_labels.pckl', 'wb'))
 
-    print('\n\n--- SCRAPING STARTED ---\n')
+    scrape = not load_model
     first = True
-    while True:
+    while scrape:
+        if first: print('\n\n--- SCRAPING STARTED ---\n')
+            
         if input('Continue Scraping? (y/n): ').lower() == 'n': break
 
         if first:
@@ -102,4 +104,4 @@ def download_google_images(new_height, new_width):
 
         print('Download Complete\n')
 
-    image_preparation(new_height, new_width)
+    image_preparation(new_height, new_width, load_model)
