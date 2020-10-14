@@ -21,7 +21,7 @@ class convolutional_neural_network():
     def load_data(self):
         train_images = pickle.load(open('dataset/train_images.pckl', 'rb'))
         test_images = pickle.load(open('dataset/test_images.pckl', 'rb'))
-
+ 
         f =  open('dataset/train_labels.pckl', 'rb')
         train_labels = []
         while True:
