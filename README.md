@@ -12,7 +12,8 @@ TO RUN: use "python3 main.py"
 TO CONFIGURE: open main.py and set variables in cnn.run() to your preferences
 
   - epochs(any int): number of times the CNN goes through all the training data 
-  - load_model(T/F): whether or not the program loads an already trained model. Is this parameter is true, train, plot, data_prep, and clear_data will automatically be false even if they are set to true
+  - load_model(T/F): whether or not the program loads a previously trained model. If this parameter is true, the parameters save_model, train, plot, data_prep, and clear_data will automatically be false even if they are manually set to true
+  - save_model(T/F): whether or not the model is saved after training
   - train(T/F): whether or not the program trains
   - evaluate(T/F): whether or not the program tests the model on test data
   - plot(T/F): whether or not the program plots the loss and accuracy over epochs
