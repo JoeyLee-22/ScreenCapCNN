@@ -4,8 +4,6 @@ test.py
 train_images/
 test_images/ 
 dataset/ 
-*.pckl
-*.jpg
 *.py[cod]
 *$py.class
 
