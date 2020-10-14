@@ -4,6 +4,7 @@ test.py
 train_images/
 test_images/ 
 dataset/ 
+*.h5
 *.py[cod]
 *$py.class
 
