@@ -9,6 +9,8 @@ This project was built and tested using Python 3.8. To run this program, you MUS
 
 TO RUN: use "python3 main.py"
 
+TO CONFIGURE: open main.py and set variables in cnn.run() to your preferences
+
 - - - 
 ### Libraries Used
   - numpy
