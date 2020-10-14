@@ -5,7 +5,7 @@ import time
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from keras.models import Sequential
+from keras.models import Sequential, load_model as keras_load_model
 from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout
 from keras.utils import to_categorical
 from image_scraping import download_google_images
@@ -14,6 +14,7 @@ class convolutional_neural_network():
     def __init__(self, new_height, new_width):
         self.new_height = new_height
         self.new_width = new_width
+        self.model_name = 'TwoClassClassificationModel'
 
     def classify(self, image):
         return np.argmax(self.model.predict(image))
@@ -47,20 +48,28 @@ class convolutional_neural_network():
 
         return (train_images,train_labels), (test_images,test_labels)
 
-    def run(self, epochs=10, train=True, evaluate=True, plot=True, data_prep=True, clear_data=False):
-        if clear_data:
+    def run(self, epochs=10, load_model=False, train=True, evaluate=True, plot=True, data_prep=True, clear_data=False):
+        (train_images, train_labels), (test_images, test_labels) = self.load_data()
+        
+        if load_model:
+            if not os.path.exists('%s.h5' % self.model_name):
+                print("\nNO MODEL AVAILABLE\n")
+                load_model=False
+            else:
+                print("\nLOADING MODEL...\n")
+                self.model = keras_load_model('%s.h5' % self.model_name)
+        
+        if clear_data and not load_model:
             if input("\nCONFIRM DATA DELETION (y/n): ")=='y':
                 os.system("sh clear_data.sh")
             else:
                 clear_data=False
         
         if data_prep or clear_data:
-            download_google_images(self.new_height, self.new_width)
+            download_google_images(self.new_height, self.new_width, load_model)
             print('\n')
 
-        if train:
-            (train_images, train_labels), (test_images, test_labels) = self.load_data()
-
+        if train and not load_model:
             train_images = train_images/255.0
             test_images = test_images/255.0
 
@@ -88,13 +97,15 @@ class convolutional_neural_network():
                 print("Total Training Time: %dmin %.2fs\n\n" % ((end_time/60), (end_time-int(end_time/60)*60)))
             else:
                 print("Total Training Time: %.2fs\n\n" % end_time)
+                
+            self.model.save('%s.h5' % self.model_name)
 
         if evaluate:
             print("TESTING")
             self.model.evaluate(test_images, test_labels)[1]
             print('\n')
 
-        if plot:
+        if plot and not load_model:
             f = plt.figure()
             f.add_subplot(2,1, 1)
             plt.plot(hist.history['accuracy'])
