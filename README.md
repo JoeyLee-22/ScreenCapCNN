@@ -21,7 +21,10 @@ TO CONFIGURE: open main.py and set variables in cnn.run() to your preferences
   - clear_data(T/F): whether or not the program resets all the data and asks for new ones
 
 - - - 
-### Libraries Used
+### Modules Used
+
+All modules can be installed via pip
+
   - numpy
   - time
   - cv2
