@@ -1,7 +1,7 @@
 # Screen Capture Convolutional Neural Network
 ## A CNN with a flexible web scraper, optimized resize function, and data preparation 
 - - -
-This project is a machine learning model that categorizes images into two categories. After it has finishing training, it is used to take screenshots and classify them as either productive or nonproductive.
+This project is a machine learning model that categorizes images into two categories. After it has finished training, it is used to take screenshots and classify them as either productive or nonproductive.
 - - -
 ### Running the Program
 
