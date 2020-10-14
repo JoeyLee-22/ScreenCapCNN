@@ -3,7 +3,7 @@ __pycache__/
 test.py
 train_images/
 test_images/ 
-dataset/
+dataset/ 
 *.pckl
 *.jpg
 *.py[cod]
