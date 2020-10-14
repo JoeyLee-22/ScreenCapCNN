@@ -133,7 +133,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-test_images/test_image1.jpg
-test_images/test_image2.jpg
-train_images/train_image1.jpg
-train_images/train_image2.jpg
