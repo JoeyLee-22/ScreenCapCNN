@@ -60,10 +60,14 @@ class convolutional_neural_network():
                 self.model = keras_load_model('%s.h5' % self.model_name)
         
         if clear_data and not load_model:
-            if input("\nCONFIRM DATA DELETION (y/n): ")=='y':
-                os.system("sh clear_data.sh")
-            else:
-                clear_data=False
+            while True:
+                user_input = input("\nCONFIRM DATA DELETION (y/n): ")
+                if user_input=='y':
+                    os.system("sh clear_data.sh")
+                    break
+                elif user_input=='n':
+                    clear_data=False
+                    break
         
         if data_prep or clear_data:
             download_google_images(self.new_height, self.new_width, load_model)
