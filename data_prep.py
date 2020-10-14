@@ -8,23 +8,26 @@ from tqdm import tqdm
 from PIL import Image
 from resize import my_resize 
 
-def image_preparation(new_height, new_width):
+def image_preparation(new_height, new_width, load_model):
     train_images = np.empty([len(os.listdir('train_images')),new_height,new_width,3])
     test_images = np.empty([len(os.listdir('test_images')),new_height,new_width,3])
 
-    print('\nPREPPING TRAIN IMAGES')
-    pbar = tqdm(total=len(os.listdir('train_images')))
-    counter=0
-    for filename in os.listdir('train_images'):
-        img = mpimg.imread('train_images/%s' % filename)
-        if img.shape[0] < new_height or img.shape[1] < new_width:
-            train_images[counter] = np.array(Image.open('train_images/%s' % filename).resize((new_width, new_height)).convert("RGB"))
-        else:
-            train_images[counter] = my_resize(img, new_height, new_width)
-        pbar.update(1)
-        counter+=1
-    pbar.close()
+    if not load_model:
+        print('\nPREPPING TRAIN IMAGES')
+        pbar = tqdm(total=len(os.listdir('train_images')))
+        counter=0
+        for filename in os.listdir('train_images'):
+            img = mpimg.imread('train_images/%s' % filename)
+            if img.shape[0] < new_height or img.shape[1] < new_width:
+                train_images[counter] = np.array(Image.open('train_images/%s' % filename).resize((new_width, new_height)).convert("RGB"))
+            else:
+                train_images[counter] = my_resize(img, new_height, new_width)
+            pbar.update(1)
+            counter+=1
+        pbar.close()
 
+    if load_model:
+        print('\n')
     print('PREPPING TEST IMAGES')
     pbar = tqdm(total=len(os.listdir('test_images')))
     counter=0
