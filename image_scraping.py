@@ -44,7 +44,7 @@ def download_google_images(new_height, new_width):
             first = False
         elif input('Same Folder? (y/n): ') == 'n':
             file_choice = input('Enter the folder you want the images to go to (train/test): ')
-            if file_choice == 'train':
+            if file_choice == 'train': 
                 label_folder = 'train_labels'
                 image_folder = 'train_images'
             elif file_choice == 'test':
