@@ -6,7 +6,7 @@ import matplotlib.image as mpimg
 import numpy as np
 from tqdm import tqdm
 from PIL import Image
-from resize import my_resize
+from resize import my_resize 
 
 def image_preparation(new_height, new_width):
     train_images = np.empty([len(os.listdir('train_images')),new_height,new_width,3])
