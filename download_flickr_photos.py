@@ -3,7 +3,6 @@
 import urllib
 import os
 import pickle
-from tqdm import tqdm
 from flickrapi import FlickrAPI
 from data_prep import image_preparation, label_preparation
 from config import API_KEY, API_SECRET
@@ -74,10 +73,10 @@ def download_flickr_photos(new_height, new_width, load_model):
                 urls.append(url)
                 if count <= num_images_train:
                     urllib.request.urlretrieve(url,'train_images/%s%d.jpg' % (search,count))
-                    print('Downloading image {:>3}'.format(count) + '/%d to train_images' % total_img)
+                    print('Downloading image {:>3}'.format(count) + '/%d ----->  train_images' % total_img)
                 else:
                     urllib.request.urlretrieve(url,'test_images/%s%d.jpg' % (search,count))
-                    print('Downloading image {:>3}'.format(count) + '/%d to test_images' % total_img)
+                    print('Downloading image {:>3}'.format(count) + '/%d ----->  test_images' % total_img)
                 count+=1
             except Exception as e:
                 print(e, 'Download failure')
