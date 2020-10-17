@@ -77,7 +77,12 @@ def download_google_images(new_height, new_width, load_model):
         if not os.path.exists(image_folder): os.mkdir(image_folder)
 
         data = input('Enter your search keyword(s): ')
-        label = int(input('Enter the label for this batch: '))
+        while True:
+            label = int(input('Enter the label for this batch (0: Productive; 1: Nonproductive): '))
+            if label == 0:
+                break
+            elif label == 1:
+                break
         num_images = int(input('Enter the number of images you want: '))
 
         print('\nSearching Images....')
