@@ -25,8 +25,6 @@ def download_flickr_photos(new_height, new_width, load_model):
     
     if scrape: print('\n\n--- SCRAPING STARTED ---\n')
     while scrape: 
-        count = 0
-
         while True:
             user_input = input('Continue Scraping? (y/n): ').lower()
             if  user_input == 'n':
@@ -66,18 +64,23 @@ def download_flickr_photos(new_height, new_width, load_model):
         
         photos = flickr.walk(text=search,extras='url_c',license='1,2,4,5',per_page=50,media='photos')
         urls = []
+        count = 1
         for photo in photos:
-            if count+1 > total_img:
+            if count > total_img:
                 print('\nMaximum number of images for download reached')
                 break
             try:
                 url=photo.get('url_c')
                 urls.append(url)
-                urllib.request.urlretrieve(url,'train_images/%s%d.jpg' % (search,count))
+                if count <= num_images_train:
+                    urllib.request.urlretrieve(url,'train_images/%s%d.jpg' % (search,count))
+                    print('Downloading image {:>3}'.format(count) + '/%d to train_images' % total_img)
+                else:
+                    urllib.request.urlretrieve(url,'test_images/%s%d.jpg' % (search,count))
+                    print('Downloading image {:>3}'.format(count) + '/%d to test_images' % total_img)
                 count+=1
-                print('Downloading image {:>3}'.format(count) + '/%d from url %s' % (total_img, url))
             except Exception as e:
                 print(e, 'Download failure')
-        print("Total images downloaded: %d\n" % count)
+        print("Total images downloaded: %d\n" % (count-1))
     
     image_preparation(new_height, new_width, load_model)
