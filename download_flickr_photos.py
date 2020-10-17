@@ -80,6 +80,6 @@ def download_flickr_photos(new_height, new_width, load_model):
                 count+=1
             except Exception as e:
                 print(e, 'Download failure')
-        print("Total images downloaded: %d\n" % (count-1))
+        print("Total images downloaded: %d\n\n" % (count-1))
     
     image_preparation(new_height, new_width, load_model)
