@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from keras.models import Sequential, load_model as keras_load_model
 from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout
 from keras.utils import to_categorical
-from google_webcrawler import download_google_images
+from download_flickr_photos import download_flickr_photos
 
 class convolutional_neural_network():
     def __init__(self, new_height, new_width):
@@ -69,7 +69,7 @@ class convolutional_neural_network():
                     break
         
         if data_prep or clear_data:
-            download_google_images(self.new_height, self.new_width, load_model)
+            download_flickr_photos(self.new_height, self.new_width, load_model)
             print('\n')
 
         if train and not load_model:
