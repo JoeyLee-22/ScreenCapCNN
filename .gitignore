@@ -1,6 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 test.py
+config.py
 train_images/
 test_images/ 
 dataset/ 
