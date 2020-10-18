@@ -22,7 +22,7 @@ def download_flickr_photos(new_height, new_width, load_model):
     first = True
     stop = False
     
-    if scrape: print('\n\n--- SCRAPING STARTED ---\n')
+    if scrape: print('\n\n\n\n--- SCRAPING STARTED ---\n')
     while scrape: 
         while True:
             user_input = input('Continue Scraping? (y/n): ').lower()
@@ -61,7 +61,7 @@ def download_flickr_photos(new_height, new_width, load_model):
         print('\n')
         total_img = num_images_train+num_images_test
         
-        photos = flickr.walk(text=search,extras='url_c',license='1,2,4,5',per_page=50,media='photos')
+        photos = flickr.walk(text=search,extras='url_c',per_page=50,media='photos')
         urls = []
         count = 1
         for photo in photos:
