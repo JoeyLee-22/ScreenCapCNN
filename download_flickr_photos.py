@@ -61,7 +61,8 @@ def download_flickr_photos(new_height, new_width, load_model):
         print('\n')
         total_img = num_images_train+num_images_test
         
-        photos = flickr.walk(text=search,extras='url_o',license='0,1,2,3,4,5,6,7,8,9,10',per_page=50)
+        image_size = 'url_o'
+        photos = flickr.walk(text=search,extras=image_size,license='0,1,2,3,4,5,6,7,8,9,10',per_page=50)
         urls = []
         count = 1
         for photo in photos:
@@ -69,7 +70,7 @@ def download_flickr_photos(new_height, new_width, load_model):
                 print('\nMaximum number of images for download reached')
                 break
             try:
-                url=photo.get('url_o')
+                url=photo.get(image_size)
                 urls.append(url) 
                 if count <= num_images_train:
                     urllib.request.urlretrieve(url,'train_images/%s%d.jpg' % (search,count))
