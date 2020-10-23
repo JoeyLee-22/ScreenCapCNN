@@ -19,7 +19,9 @@ u_agnt = {
 }
 
 def download_google_images(new_height, new_width, load_model):
-    if not os.path.exists('dataset'): os.mkdir('dataset') 
+    if not os.path.exists('dataset'): os.mkdir('dataset')
+    if not os.path.exists('test_images'): os.mkdir('test_images')
+    if not os.path.exists('train_images'): os.mkdir('train_images')
     
     if not os.path.exists("dataset/train_labels.pckl"):
         pickle.dump(0, open('dataset/num_train_labels.pckl', 'wb'))
