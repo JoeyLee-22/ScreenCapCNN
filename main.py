@@ -1,6 +1,7 @@
 from screen_cap import start
 from CNN import convolutional_neural_network
 
+#screen size = (2100, 3360)
 (new_height,new_width) = (300, 480) 
 
 cnn = convolutional_neural_network(new_height, new_width)
