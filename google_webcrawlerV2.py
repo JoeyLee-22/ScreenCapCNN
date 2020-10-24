@@ -29,12 +29,10 @@ def download_google_images(new_height, new_width, load_model):
         pickle.dump(0, open('dataset/num_test_labels.pckl', 'wb'))
 
     scrape = not load_model
-    first = True
     stop = False
-    file_choice = 'N/A'
-    while scrape:
-        if first: print('\n\n--- SCRAPING STARTED ---\n')
-        
+    if scrape: print('\n\n\n\n--- SCRAPING STARTED ---\n')
+    
+    while scrape: 
         while True:
             user_input = input('Continue Scraping? (y/n): ').lower()
             if  user_input == 'n':
@@ -45,57 +43,38 @@ def download_google_images(new_height, new_width, load_model):
         if stop == True:
             break
 
-        if first:
-            while True: 
-                file_choice = input('Enter the folder you want the images to go to (train/test): ')
-                if file_choice == 'train':
-                    label_folder = 'train_labels'
-                    image_folder = 'train_images'
-                    break
-                elif file_choice == 'test':
-                    label_folder = 'test_labels'
-                    image_folder = 'test_images'
-                    break
+        search = input('\nEnter search keyword(s): ')
         while True:
-            if first:
-                first = False
-                break
-            user_choice = input('Current Folder: %s; Same Folder? (y/n): ' % file_choice)
-            if  user_choice == 'n':
-                while True:
-                    file_choice = input('Enter the folder you want the images to go to (train/test): ')
-                    if file_choice == 'train': 
-                        label_folder = 'train_labels'
-                        image_folder = 'train_images'
-                        break
-                    elif file_choice == 'test':
-                        label_folder = 'test_labels'
-                        image_folder = 'test_images'
-                        break
-                break
-            elif user_choice == 'y':
-                break
-        
-        if not os.path.exists(image_folder): os.mkdir(image_folder)
-
-        data = input('Enter your search keyword(s): ')
-        while True:
-            label = int(input('Enter the label for this batch (0: Productive; 1: Nonproductive): '))
+            label = int(input('Enter label for this batch (0: Productive; 1: Nonproductive): '))
             if label == 0:
                 break
             elif label == 1:
                 break
-        num_images = int(input('Enter the number of images you want: '))
-
+        
+        while True:
+            while True:
+                num_images_train = int(input('Enter number of images for training: '))
+                break
+            while True:
+                num_images_test = int(input('Enter number of images for testing: '))
+                break
+            total_img = num_images_train+num_images_test
+            if total_img <= 80:
+                label_preparation(num_images_test, label, 'test_labels')
+                pickle.dump(pickle.load(open('dataset/num_test_labels.pckl', 'rb'))+num_images_test, open('dataset/num_test_labels.pckl', 'wb'))
+                label_preparation(num_images_train, label, 'train_labels')
+                pickle.dump(pickle.load(open('dataset/num_train_labels.pckl', 'rb'))+num_images_train, open('dataset/num_train_labels.pckl', 'wb'))
+                break
+            print('\nTOTAL IMAGES CANNOT EXCEED 80; YOUR TOTAL: %d\n' % total_img)
+            
         print('\nSearching Images....')
         
-        search_url = Google_Image + 'q=' + data 
+        search_url = Google_Image + 'q=' + search 
         
         response = requests.get(search_url, headers=u_agnt)
         html = response.text
         
-        b_soup = BeautifulSoup(html, 'html.parser') 
-        results = b_soup.findAll('img', {'class': 'rg_i Q4LuWd'})
+        results = BeautifulSoup(html, 'html.parser').findAll('img', {'class': 'rg_i Q4LuWd'})
 
         count = 0
         imagelinks= []
@@ -104,31 +83,26 @@ def download_google_images(new_height, new_width, load_model):
                 link = res['data-src']
                 imagelinks.append(link)
                 count += 1
-                if (count >= num_images):
+                if (count >= total_img):
                     break
             except KeyError:
                 continue
         
         print(f'Found {len(imagelinks)} images')
-        print('\nStarted downloading...')
+        print('\nSTARTED DOWNLOADING...')
 
-        label_preparation(len(imagelinks), label, label_folder)
-
-        if label_folder=='train_labels':
-            pickle.dump(pickle.load(open('dataset/num_train_labels.pckl', 'rb'))+len(imagelinks), open('dataset/num_train_labels.pckl', 'wb'))
-        else:
-            pickle.dump(pickle.load(open('dataset/num_test_labels.pckl', 'rb'))+len(imagelinks), open('dataset/num_test_labels.pckl', 'wb'))
-
-        pbar = tqdm(total=len(imagelinks))
         for i, imagelink in enumerate(imagelinks):
             response = requests.get(imagelink)
             
-            imagename = image_folder + '/' + data + str(i+1) + '.jpg'
+            if i<num_images_train:
+                imagename = 'train_images/' + search + str(i+1) + '.jpg'
+                print('Downloading image {:>3}'.format(i+1) + '/%d ----->  train_images' % total_img)
+            else:
+                imagename = 'test_images/' + search + str(i+1) + '.jpg'
+                print('Downloading image {:>3}'.format(i+1) + '/%d ----->  test_images' % total_img)
             with open(imagename, 'wb') as file:
                 file.write(response.content)
-            pbar.update(1)
-        pbar.close()
 
-        print('Download Complete\n')
+        print('DOWNLOAD COMPLETE\n')
 
     image_preparation(new_height, new_width, load_model)
