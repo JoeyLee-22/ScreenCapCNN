@@ -9,7 +9,7 @@ from keras.models import Sequential, load_model as keras_load_model
 from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout
 from keras.utils import to_categorical
 from download_flickr_photos import download_flickr_photos
-from google_webcrawler import download_google_images
+from google_webcrawlerV2 import download_google_images
 
 class convolutional_neural_network():
     def __init__(self, new_height, new_width):
