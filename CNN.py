@@ -94,7 +94,7 @@ class convolutional_neural_network():
 
             start_time = time.time()
             self.model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-            hist = self.model.fit(train_images, train_labels, epochs=epochs)
+            hist = self.model.fit(train_images, train_labels, epochs=epochs, validation_data=(test_images, test_labels))
             end_time = time.time() - start_time
 
             if end_time > 3600:
@@ -112,14 +112,21 @@ class convolutional_neural_network():
             self.model.evaluate(test_images, test_labels)[1]
             print('\n')
 
-        if plot and not load_model:
+        if plot and not load_model:            
             f = plt.figure()
             f.add_subplot(2,1, 1)
-            plt.plot(hist.history['accuracy'])
-            plt.title('Model Accuracy (top) and Model Loss (bottom)')
+            plt.plot(hist.history['accuracy'], label='train accuracy')
+            plt.plot(hist.history['val_accuracy'], label ='val accuracy')
+            plt.title('Model Accuracy (top) and Model Loss (bottom)')     
             plt.ylabel('Accuracy')
+            plt.legend(loc='lower left')
+            
             f.add_subplot(2,1, 2)
-            plt.plot(hist.history['loss'])
-            plt.ylabel('Loss')
+            plt.plot(hist.history['loss'], label='train loss')
+            plt.plot(hist.history['val_loss'], label ='val loss')
             plt.xlabel('Epoch')
+            plt.ylabel('Loss')
+            plt.ylim([0, 2])
+            plt.legend(loc='lower left')
+            
             plt.show()
