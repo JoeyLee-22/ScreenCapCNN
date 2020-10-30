@@ -1,15 +1,13 @@
 # pyright: reportUnboundVariable=false
 
-import pickle
 import time
 import os
 import numpy as np
 import matplotlib.pyplot as plt
 from keras.models import Sequential, load_model as keras_load_model
 from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout
-from keras.utils import to_categorical
-from download_flickr_photos import download_flickr_photos
 from google_webcrawlerV2 import download_google_images
+from load_data import load_data
 
 class convolutional_neural_network():
     def __init__(self, new_height, new_width):
@@ -20,38 +18,9 @@ class convolutional_neural_network():
     def classify(self, image):
         return np.argmax(self.model.predict(image))
 
-    def load_data(self):
-        train_images = pickle.load(open('dataset/train_images.pckl', 'rb'))
-        test_images = pickle.load(open('dataset/test_images.pckl', 'rb'))
- 
-        f =  open('dataset/train_labels.pckl', 'rb')
-        train_labels = []
-        while True:
-            try:
-                train_labels.append(pickle.load(f))
-            except EOFError:
-                break
-        train_labels = (np.array(train_labels))[:,:,0]
-        train_labels.resize(pickle.load(open('dataset/num_train_labels.pckl', 'rb')),1)
-
-        f =  open('dataset/test_labels.pckl', 'rb')
-        test_labels = []
-        while True:
-            try:
-                test_labels.append(pickle.load(f))
-            except EOFError:
-                break
-        test_labels = (np.array(test_labels))[:,:,0]
-        test_labels.resize(pickle.load(open('dataset/num_test_labels.pckl', 'rb')),1)
-
-        train_labels = to_categorical((np.array(train_labels)))
-        test_labels = to_categorical((np.array(test_labels)))
-
-        return (train_images,train_labels), (test_images,test_labels)
-
     def run(self, epochs=10, load_model=False, save_model=False, train=True, evaluate=True, plot=True, data_prep=True, clear_data=False):        
         if load_model:
-            (train_images, train_labels), (test_images, test_labels) = self.load_data()
+            (train_images, train_labels), (test_images, test_labels) = load_data()
             if not os.path.exists('%s.h5' % self.model_name):
                 print("\nNO MODEL AVAILABLE\n")
                 load_model=False
@@ -74,7 +43,7 @@ class convolutional_neural_network():
             print('\n')
 
         if train and not load_model:
-            (train_images, train_labels), (test_images, test_labels) = self.load_data()
+            (train_images, train_labels), (test_images, test_labels) = load_data()
                     
             train_images = train_images/255.0
             test_images = test_images/255.0
