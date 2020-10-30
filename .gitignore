@@ -3,6 +3,8 @@ __pycache__/
 test.py
 config.py
 screenshots/
+resized_train_images/
+resized_test_images/
 train_images/
 test_images/ 
 dataset/ 
