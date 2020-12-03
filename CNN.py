@@ -46,9 +46,11 @@ class convolutional_neural_network():
                 if (website == '0'):
                     download_google_images(self.new_height, self.new_width, load_model)
                     print('\n')
+                    break
                 elif (website == '1'):
                     download_flickr_photos(self.new_height, self.new_width, load_model)
                     print('\n')
+                    break
 
         if train and not load_model:
             (train_images, train_labels), (test_images, test_labels) = load_data()
