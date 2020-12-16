@@ -6,8 +6,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from keras.models import Sequential, load_model as keras_load_model
 from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout
-from google_webcrawlerV2 import download_google_images
-from download_flickr_photos import download_flickr_photos
+from webcrawlers.google_webcrawlerV2 import download_google_images
+from webcrawlers.download_flickr_photos import download_flickr_photos
+from webcrawlers.download_bing_photos import download_bing_photos
 from load_data import load_data
 
 class convolutional_neural_network():
@@ -42,7 +43,7 @@ class convolutional_neural_network():
         if data_prep or clear_data:
             print('\n')
             while(True):
-                website = input("Scrape Google(0) or Flickr(1)? ")
+                website = input("Scrape Google(0), Flickr(1), or Bing(2)? ")
                 if (website == '0'):
                     download_google_images(self.new_height, self.new_width, load_model)
                     print('\n')
@@ -51,6 +52,10 @@ class convolutional_neural_network():
                     download_flickr_photos(self.new_height, self.new_width, load_model)
                     print('\n')
                     break
+                elif (website == '2'):
+                    download_bing_photos(self.new_height, self.new_width, load_model)
+                    print('\n')
+                    break     
 
         if train and not load_model:
             (train_images, train_labels), (test_images, test_labels) = load_data()
