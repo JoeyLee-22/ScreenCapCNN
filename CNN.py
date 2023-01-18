@@ -60,24 +60,34 @@ class convolutional_neural_network():
         if train and not load_model:
             (train_images, train_labels), (test_images, test_labels) = load_data()
                     
+            # print("\n\CNN.py\nTrain Labels:")
+            # print(train_labels)
+            # print("Test Labels:")
+            # print(test_labels)
+            # print("\n\n")
+                    
             train_images = train_images/255.0
             test_images = test_images/255.0
 
             self.model = Sequential()
-            self.model.add(Conv2D(32, (5,5), activation='relu', input_shape=(self.new_height,self.new_width,3)))
-            self.model.add(MaxPooling2D(pool_size=(2,2)))
-            self.model.add(Conv2D(32, (5,5), activation='relu'))
-            self.model.add(MaxPooling2D(pool_size=(2,2)))
-            self.model.add(Flatten())
-            self.model.add(Dense(1024, activation='relu'))
-            self.model.add(Dropout(0.5))
-            self.model.add(Dense(512, activation='relu'))
-            self.model.add(Dropout(0.5))
-            self.model.add(Dense(256, activation='relu'))
-            self.model.add(Dense(2, activation='softmax'))
+            self.model.add(Dense(12, input_shape=(self.new_height,self.new_width,3), activation='relu'))
+            self.model.add(Dense(8, activation='relu'))
+            self.model.add(Dense(1, activation='sigmoid'))
+            # self.model.add(Conv2D(32, (5,5), activation='relu', input_shape=(self.new_height,self.new_width,3)))
+            # self.model.add(MaxPooling2D(pool_size=(2,2)))
+            # self.model.add(Conv2D(32, (5,5), activation='relu'))
+            # self.model.add(MaxPooling2D(pool_size=(2,2)))
+            # self.model.add(Flatten())
+            # self.model.add(Dense(1024, activation='relu'))
+            # self.model.add(Dropout(0.5))
+            # self.model.add(Dense(512, activation='relu'))
+            # self.model.add(Dropout(0.5))
+            # self.model.add(Dense(256, activation='relu'))
+            # self.model.add(Dense(2, activation='softmax'))
 
             start_time = time.time()
             self.model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+            
             hist = self.model.fit(train_images, train_labels, epochs=epochs, validation_data=(test_images, test_labels))
             end_time = time.time() - start_time
 
